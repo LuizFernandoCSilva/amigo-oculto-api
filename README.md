@@ -86,4 +86,4 @@ Este projeto está licenciado sob a Licença MIT. Consulte o arquivo [LICENSE](L
 
 ---
 
-Feito com ❤ por [Luiz Fernando Costa Silva](https://github.com/LuizFernandoCSilva).
+Feito por [Luiz Fernando Costa Silva](https://github.com/LuizFernandoCSilva).
