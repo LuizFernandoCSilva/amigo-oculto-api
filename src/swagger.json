@@ -1,0 +1,275 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Amigos Ocultos",
+    "description": "API para gerenciamento de nomes e sorteios de amigo oculto",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/createnames": {
+      "post": {
+        "summary": "Cria novos nomes",
+        "description": "Salva uma lista de nomes e emails no sistema",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["name", "email"]
+                }
+              },
+              "example": [
+                {
+                  "name": "João Silva",
+                  "email": "joao.silva@example.com"
+                },
+                {
+                  "name": "Maria Oliveira",
+                  "email": "maria.oliveira@example.com"
+                }
+              ]
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Nomes salvos com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "savedNames": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Nomes e emails salvos com sucesso",
+                  "savedNames": ["João Silva", "Maria Oliveira"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "duplicados_nomes_e_emails": {
+                    "summary": "Duplicação de nomes e emails",
+                    "value": {
+                      "error": "Os seguintes nomes e emails são duplicados: João Silva - joao.silva@example.com"
+                    }
+                  },
+                  "duplicados_nomes": {
+                    "summary": "Duplicação de nomes",
+                    "value": {
+                      "error": "Os seguintes nomes são duplicados: João Silva"
+                    }
+                  },
+                  "duplicados_emails": {
+                    "summary": "Duplicação de emails",
+                    "value": {
+                      "error": "Os seguintes emails são duplicados: joao.silva@example.com"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Erro ao salvar os nomes no banco de dados."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/names": {
+      "get": {
+        "summary": "Retorna todos os nomes cadastrados",
+        "responses": {
+          "200": {
+            "description": "Lista de nomes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "name": "João Silva",
+                    "email": "joao.silva@example.com"
+                  },
+                  {
+                    "name": "Maria Oliveira",
+                    "email": "maria.oliveira@example.com"
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Erro ao acessar o banco de dados."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sortnames": {
+      "post": {
+        "summary": "Sorteia os nomes",
+        "description": "Realiza o sorteio de amigos ocultos entre os nomes cadastrados",
+        "responses": {
+          "200": {
+            "description": "Sorteio realizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "friend": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Sorteio realizado com sucesso",
+                  "result": [
+                    {
+                      "name": "João Silva",
+                      "email": "joao.silva@example.com",
+                      "secretfriend": "Maria Oliveira"
+                    },
+                    {
+                      "name": "Maria Oliveira",
+                      "email": "maria.oliveira@example.com",
+                      "secretfriend": "João Silva"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro ao realizar o sorteio",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "É necessário pelo menos duas pessoas para sortear."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Erro ao acessar o banco de dados."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
