@@ -3033,7 +3033,14 @@ node-releases@^2.0.19:
   resolved "https://registry.npmjs.org/node-releases/-/node-releases-2.0.19.tgz"
   integrity sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw==
 
-nodemailer@^6.9.16:
+nodemailer-mock@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.npmjs.org/nodemailer-mock/-/nodemailer-mock-2.0.6.tgz"
+  integrity sha512-9x/QN1AbKy4PJ7yIQnToly3c7gUCSGABeB10/c5jgO986fAOMghzVedbZe8UDsu2PEStCoOd+MayX09CduYSHQ==
+  dependencies:
+    debug "^4.3.4"
+
+nodemailer@^6.9.16, nodemailer@^6.x:
   version "6.9.16"
   resolved "https://registry.npmjs.org/nodemailer/-/nodemailer-6.9.16.tgz"
   integrity sha512-psAuZdTIRN08HKVd/E8ObdV6NO7NTBY3KsC30F7M4H1OnmLCUNaS56FpYxyb26zWLSyYF9Ozch9KYHhHegsiOQ==

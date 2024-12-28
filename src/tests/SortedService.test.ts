@@ -1,10 +1,58 @@
 import NameRepository from "../repositories/NameRepository";
 import SortedNameRepository from "../repositories/SortedNameRepository";
 import SortedService from "../services/SortedService";
+import transporter from "../config/emailconfig";
+
+jest.mock("../config/emailconfig");
 
 describe("Testando o SortedService", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it("deve sortear nomes e enviar e-mails corretamente", async () => {
+    // Mock dos dados retornados pelo NameRepository
+    const mockNames = [
+      { id: 1, name: "João", email: "joao@example.com" },
+      { id: 2, name: "Maria", email: "maria@example.com" },
+    ];
+
+    jest.spyOn(NameRepository, "findAll").mockResolvedValue(mockNames);
+    jest.spyOn(SortedNameRepository, "saveSortedNames").mockResolvedValue([]);
+
+    // Mock do transporter para simular envio de e-mail
+    const sendMailMock = jest.fn().mockResolvedValue({});
+    (transporter.sendMail as jest.Mock).mockImplementation(sendMailMock);
+
+    const result = await SortedService.sortedNames();
+
+    // Verifica se o resultado contém os pares de amigo secreto
+    expect(result).toHaveLength(2);
+    expect(result).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: "João", secretFriend: "Maria" }),
+        expect.objectContaining({ name: "Maria", secretFriend: "João" }),
+      ])
+    );
+
+    // Verifica se o método sendMail foi chamado
+    expect(sendMailMock).toHaveBeenCalledTimes(2);
+
+    // Verifica os parâmetros do envio de e-mail
+    expect(sendMailMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        from: expect.stringContaining("Amigo Oculto"),
+        to: "joao@example.com",
+        subject: "Seu amigo oculto foi sorteado!",
+      })
+    );
+    expect(sendMailMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        from: expect.stringContaining("Amigo Oculto"),
+        to: "maria@example.com",
+        subject: "Seu amigo oculto foi sorteado!",
+      })
+    );
   });
 
   it("Deve retornar um erro ao tentar sortear menos de duas pessoas", async () => {
