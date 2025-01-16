@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn-primary {
+    @apply bg-secondary text-white font-semibold py-2 px-4 rounded-lg transition-all hover:bg-secondary-dark active:scale-95;
+  }
+  .btn-secondary {
+    @apply bg-primary text-white font-semibold py-2 px-4 rounded-lg transition-all hover:bg-primary-dark active:scale-95;
+  }
+  .input-class {
+    @apply w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary;
+  }
+  .spin-animation {
+    @apply h-8 w-8 border-4 border-t-primary border-gray-300 rounded-full animate-spin;
+  }
+}
